@@ -1,0 +1,115 @@
+body {
+	/*border-style: solid;
+	border-width: 1px;
+	border-color: black;*/
+	/*width: 607px;*/
+	margin: 0px;
+	background-color: white;
+	/*TODO think about it height: 500px;*/
+	font-family: tahoma,arial,verdana,sans-serif,Lucida Sans;
+}
+
+h1 {
+	/*margin: 0px;*/
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-left: 20px;
+	color: #45688E;
+}
+
+#fromDifferentSourcesNote {
+    margin-left: 150px;
+    font-style: italic;
+    font-size: large;
+    color: #45688E;
+}
+
+#mainInfo {
+	/*border-style: solid;
+	border-width: 1px;
+	border-color: #45688E;*/
+	margin-left: 20px;
+	margin-right: 20px;
+	margin-top: 10px;
+}
+
+#mainInfo td {
+	padding: 5px;
+}
+
+/*#mainInfo td, #mainInfo tr {
+	border-style: solid;
+    border-width: 1px;
+    border-color: black;
+}*/
+
+.header td {
+	font-size: 11px;
+}
+
+.phenomenaCell {
+	font-size: 11px;
+}
+
+.nobr  {
+	white-space:nowrap;
+}
+
+.sourceNote {
+	background: none repeat scroll 0 0 #E9EDF1;
+    border-color: #D9E0E7;    
+    border-width: 0 1px;
+    color: #607387;
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 140%;
+    padding: 7px 10px;
+    position: relative;
+}
+
+.littleTime {
+	font-size: 11px;
+}
+
+#forecaQuote {
+	margin-left: 50px;
+	font-size: 11px;
+}
+
+#forecaQuoteLink {
+	text-decoration: none;	
+}
+
+#buttons {
+	margin-left: 100px;
+	text-align: center;
+}
+
+button {	
+    background: #5E80A5;
+    color: white;
+}
+
+.whichWallCell {
+	font-size: 11px;
+}
+
+#friendSelect {
+	width: 200px;
+}
+
+#vkPollContainer {
+	text-align: center;
+}
+
+#vk_poll {
+	margin: 0 auto;
+}
+
+#referenceButton {
+	float: right;
+}
+
+#referenceButtonLink {
+	text-decoration: none;
+}
