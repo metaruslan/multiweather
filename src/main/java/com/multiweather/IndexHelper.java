@@ -114,12 +114,12 @@ public class IndexHelper {
         return dateFormat.format(date);
     }
     
-    public static String constructWallMessage(List<GismeteoWeatherInfo> gismeteoInfos, List<ForecaWeatherInfo> forecaInfos) {
+    public static String constructWallMessage(List<GismeteoWeatherInfo> gismeteoInfos, List<ForecaWeatherInfo> forecaInfos, City city) {
         GismeteoWeatherInfo dayGismeteoInfo = findDayGismeteoInfo(gismeteoInfos);
         //TODO make better
         if (forecaInfos != null) {
             ForecaWeatherInfo dayForecaInfo = findDayForecaInfo(forecaInfos);
-            return "Внимание! Вещаю погоду! В Москве днем: на gismeteo.ru: " + dayGismeteoInfo.getAirTemperature() + ", на foreca.ru: " + dayForecaInfo.getAirTemperature() + ". Пригодилось? Скажи спасибо мне и смотри подробнее тут: vk.com/app2797247";
+            return "Внимание! Вещаю погоду! В " + city.getNameInGenitiveCase() + " днем: на gismeteo.ru: " + dayGismeteoInfo.getAirTemperature() + ", на foreca.ru: " + dayForecaInfo.getAirTemperature() + ". Пригодилось? Скажи спасибо мне и смотри подробнее тут: vk.com/app2797247";
         }
         return "Внимание! Вещаю погоду! В Москве днем: на gismeteo.ru: " + dayGismeteoInfo.getAirTemperature() + ". Пригодилось? Скажи спасибо мне и смотри подробнее тут: vk.com/app2797247";
     }

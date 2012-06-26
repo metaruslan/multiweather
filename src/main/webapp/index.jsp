@@ -25,12 +25,12 @@ List<ForecaWeatherInfo> forecaInfos = weatherData.getForecaWeatherInfos();
 %>
 <table id="buttons">
     <tr>
-        <td><button id="postOnWallButton" onclick="postToWall('<%=IndexHelper.constructWallMessage(gismeteoInfos, forecaInfos)%>');" title="У себя на стене">Сообщить друзьям</button></td>
+        <td><button id="postOnWallButton" onclick="postToWall('<%=IndexHelper.constructWallMessage(gismeteoInfos, forecaInfos, city)%>');" title="У себя на стене">Сообщить друзьям</button></td>
         <td>
             <table>
                 <tr>
                     <td>
-                        <button id="postOnWallButton" onclick="postToFriendsWall('<%=IndexHelper.constructWallMessage(gismeteoInfos, forecaInfos)%>');" title="У него на стене">Сообщить другу</button>
+                        <button id="postOnWallButton" onclick="postToFriendsWall('<%=IndexHelper.constructWallMessage(gismeteoInfos, forecaInfos, city)%>');" title="У него на стене">Сообщить другу</button>
                     </td>
                     <td style="padding-top: 5px;">
                         <select id="friendSelect">
