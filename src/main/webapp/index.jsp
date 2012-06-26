@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ page import="java.util.List" %>
+<%@ page import="com.multiweather.City" %>
 <%@ page import="com.multiweather.IndexHelper" %>
 <%@ page import="com.multiweather.WeatherData" %>
 <%@ page import="com.multiweather.GismeteoWeatherInfo" %>
@@ -12,12 +13,13 @@
 <script src="http://vkontakte.ru/js/api/xd_connection.js?2" type="text/javascript"></script>
 <script type="text/javascript" src="http://userapi.com/js/api/openapi.js?48"></script>
 <script src="scripts.js" type="text/javascript"></script>
-<title>Погода в Москве</title>
+<%City city = IndexHelper.getCity(request.getParameter("city"));%>
+<title>Погода в <%=city.getNameInGenitiveCase()%></title>
 </head>
-<body><a href="http://vk.com/club35235703" target="_blank" id="referenceButtonLink"><button id="referenceButton">Оставить отзыв в группе</button></a><h1>Погода в Москве</h1>
-<div id="fromDifferentSourcesNote">из разных источников</div>
+<body><a href="http://vk.com/club35235703" target="_blank" id="referenceButtonLink"><button id="referenceButton">Оставить отзыв в группе</button></a><h1>Погода в <%=city.getNameInGenitiveCase()%></h1>
+<% if (city.isForecaSupported()) { %><div id="fromDifferentSourcesNote">из разных источников</div><% } %>
 <%
-WeatherData weatherData = IndexHelper.getWeatherData(request.getServletContext());
+WeatherData weatherData = IndexHelper.getWeatherData(request.getServletContext(), city);
 List<GismeteoWeatherInfo> gismeteoInfos = weatherData.getGismeteoWeatherInfos();
 List<ForecaWeatherInfo> forecaInfos = weatherData.getForecaWeatherInfos();
 %>
@@ -72,7 +74,10 @@ List<ForecaWeatherInfo> forecaInfos = weatherData.getForecaWeatherInfos();
         <td><%= weatherInfo.getAirHumidity() %> %</td>
         <td><%= weatherInfo.getComfortAirTemperature() %></td>
     </tr>
-    <% } %>    
+    <% } %>
+    
+    <%if (forecaInfos != null) {%>
+        
     <tr>
         <td colspan="7" class="sourceNote">
             По данным <a href="http://foreca.com" target="_blank">Foreca</a><a href="#forecaQuote" id="forecaQuoteLink">*</a>
@@ -104,7 +109,10 @@ List<ForecaWeatherInfo> forecaInfos = weatherData.getForecaWeatherInfos();
         <td><%= weatherInfo.getAirHumidity() %> %</td>
         <td><%= weatherInfo.getComfortAirTemperature() %></td>
     </tr>
-    <% } %>   
+    <% } %>
+    
+    <% } %>    
+       
 </table>
 
 <div id="forecaQuote">

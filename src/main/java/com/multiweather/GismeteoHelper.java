@@ -16,10 +16,10 @@ import org.xml.sax.SAXException;
 import com.multiweather.WeatherInfo.TimeOfDay;
 import com.multiweather.WeatherInfo.WindDirection;
 
-public class GismeteoHelper {    
+public class GismeteoHelper {
 
-    public static List<GismeteoWeatherInfo> getGismeteoWeatherInfos() throws ParserConfigurationException, SAXException, IOException {        
-        Document document = IndexHelper.getDocument("http://informer.gismeteo.ru/xml/27612_1.xml");
+    public static List<GismeteoWeatherInfo> getGismeteoWeatherInfos(City city) throws ParserConfigurationException, SAXException, IOException {        
+        Document document = IndexHelper.getDocument(city.getGismeteoUrl());        
         
         List<GismeteoWeatherInfo> weatherInfos = new ArrayList<GismeteoWeatherInfo>();
 
@@ -64,7 +64,7 @@ public class GismeteoHelper {
             weatherInfos.add(weatherInfo);
         }
         
-        Utils.log("Gismeteo weather infos: \n " + weatherInfos);
+        Utils.log("Gismeteo weather infos for " + city.getCityId() + ": \n " + weatherInfos);
         return weatherInfos;
     }
 

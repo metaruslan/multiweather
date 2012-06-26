@@ -5,6 +5,8 @@ import java.util.List;
 
 public class WeatherData {
     
+    static final String ATTRIBUTE_NAME = "com.multiweather.WeatherData";
+    
     private Date loadTime;
     
     private List<GismeteoWeatherInfo> gismeteoWeatherInfos;

@@ -44,24 +44,27 @@ public class IndexHelper {
         return document;
     }
     
-    public static WeatherData getWeatherData(ServletContext servletContext) throws ParserConfigurationException, SAXException, IOException, ParseException, TransformerException {
-        WeatherData cachedWeatherData = (WeatherData)servletContext.getAttribute("com.multiweather.WeatherData");
+    public static WeatherData getWeatherData(ServletContext servletContext, City city) throws ParserConfigurationException, SAXException, IOException, ParseException, TransformerException {
+        String attributeName = WeatherData.ATTRIBUTE_NAME + city.getCityId();
+        WeatherData cachedWeatherData = (WeatherData)servletContext.getAttribute(attributeName);
         long now = new Date().getTime();
                              
-        Utils.log("Cached weather data load time is " + (cachedWeatherData != null ? cachedWeatherData.getLoadTime() : "[cache is null]"));
+        Utils.log("City is " + city.getCityId() + ". Cached weather data load time is " + (cachedWeatherData != null ? cachedWeatherData.getLoadTime() : "[cache is null]"));
         if (cachedWeatherData == null || now - cachedWeatherData.getLoadTime().getTime() > MILLISECONDS_IN_HOUR) {
             if (cachedWeatherData == null) {
                 Utils.log("Cache is null. Loading from remote sources...");
             } else {
                 Utils.log("Elapsed time \n" + formatMilliseconds(now - cachedWeatherData.getLoadTime().getTime())
                         + " is more than\n" + formatMilliseconds(MILLISECONDS_IN_HOUR) + "\nLoading from remote sources...");                
-            }             
-            List<GismeteoWeatherInfo> gismeteoWeatherInfos = GismeteoHelper.getGismeteoWeatherInfos();
-            List<ForecaWeatherInfo> forecaWeatherInfos = ForecaHelper.getForecaWeatherInfos(gismeteoWeatherInfos);
+            }
+            List<GismeteoWeatherInfo> gismeteoWeatherInfos = GismeteoHelper.getGismeteoWeatherInfos(city);
             WeatherData newWeatherData = new WeatherData(new Date(now));
             newWeatherData.setGismeteoWeatherInfos(gismeteoWeatherInfos);
-            newWeatherData.setForecaWeatherInfos(forecaWeatherInfos);
-            servletContext.setAttribute("com.multiweather.WeatherData", newWeatherData);
+            if (city.isForecaSupported()) {
+                List<ForecaWeatherInfo> forecaWeatherInfos = ForecaHelper.getForecaWeatherInfos(gismeteoWeatherInfos);
+                newWeatherData.setForecaWeatherInfos(forecaWeatherInfos);
+            }            
+            servletContext.setAttribute(attributeName, newWeatherData);
             return newWeatherData;
         } else {
             Utils.log("Using cache");
@@ -113,14 +116,23 @@ public class IndexHelper {
     
     public static String constructWallMessage(List<GismeteoWeatherInfo> gismeteoInfos, List<ForecaWeatherInfo> forecaInfos) {
         GismeteoWeatherInfo dayGismeteoInfo = findDayGismeteoInfo(gismeteoInfos);
-        ForecaWeatherInfo dayForecaInfo = findDayForecaInfo(forecaInfos);
-        return "Внимание! Вещаю погоду! В Москве днем: на gismeteo.ru: " + dayGismeteoInfo.getAirTemperature() + ", на foreca.ru: " + dayForecaInfo.getAirTemperature() + ". Пригодилось? Скажи спасибо мне и смотри подробнее тут: vk.com/app2797247";
+        //TODO make better
+        if (forecaInfos != null) {
+            ForecaWeatherInfo dayForecaInfo = findDayForecaInfo(forecaInfos);
+            return "Внимание! Вещаю погоду! В Москве днем: на gismeteo.ru: " + dayGismeteoInfo.getAirTemperature() + ", на foreca.ru: " + dayForecaInfo.getAirTemperature() + ". Пригодилось? Скажи спасибо мне и смотри подробнее тут: vk.com/app2797247";
+        }
+        return "Внимание! Вещаю погоду! В Москве днем: на gismeteo.ru: " + dayGismeteoInfo.getAirTemperature() + ". Пригодилось? Скажи спасибо мне и смотри подробнее тут: vk.com/app2797247";
     }
     
     public static int calculateCounter(List<GismeteoWeatherInfo> gismeteoInfos, List<ForecaWeatherInfo> forecaInfos) {
         GismeteoWeatherInfo dayGismeteoInfo = findDayGismeteoInfo(gismeteoInfos);
-        ForecaWeatherInfo dayForecaInfo = findDayForecaInfo(forecaInfos);
-        return (dayGismeteoInfo.getAirTemperature() + dayForecaInfo.getAirTemperature()) / 2;
+        //TODO make better
+        if (forecaInfos != null) {
+            ForecaWeatherInfo dayForecaInfo = findDayForecaInfo(forecaInfos);
+            return (dayGismeteoInfo.getAirTemperature() + dayForecaInfo.getAirTemperature()) / 2;
+        } else {
+            return dayGismeteoInfo.getAirTemperature();
+        }
     }
     
     private static GismeteoWeatherInfo findDayGismeteoInfo(List<GismeteoWeatherInfo> weatherInfos) {
@@ -139,5 +151,17 @@ public class IndexHelper {
             }
         }
         throw new RuntimeException("Day info not found");
+    }
+    
+    public static City getCity(String cityId) {
+        if (cityId == null) {
+            throw new RuntimeException("City not specified");
+        }
+        for (City city : City.values()) {
+            if (city.getCityId().equals(cityId)) {
+                return city;
+            }
+        }
+        throw new RuntimeException("City not found");
     }
 }
