@@ -119,9 +119,9 @@ public class IndexHelper {
         //TODO make better
         if (forecaInfos != null) {
             ForecaWeatherInfo dayForecaInfo = findDayForecaInfo(forecaInfos);
-            return "Внимание! Вещаю погоду! В " + city.getNameInGenitiveCase() + " днем: на gismeteo.ru: " + dayGismeteoInfo.getAirTemperature() + ", на foreca.ru: " + dayForecaInfo.getAirTemperature() + ". Пригодилось? Скажи спасибо мне и смотри подробнее тут: vk.com/app2797247";
+            return "Внимание! Вещаю погоду! В " + city.getNameInGenitiveCase() + " днем: на gismeteo.ru: " + dayGismeteoInfo.getAirTemperature() + ", на foreca.ru: " + dayForecaInfo.getAirTemperature() + ". Пригодилось? Скажи спасибо мне и смотри подробнее тут: " + city.getVkAppUrl();
         }
-        return "Внимание! Вещаю погоду! В Москве днем: на gismeteo.ru: " + dayGismeteoInfo.getAirTemperature() + ". Пригодилось? Скажи спасибо мне и смотри подробнее тут: vk.com/app2797247";
+        return "Внимание! Вещаю погоду! В " + city.getNameInGenitiveCase() + " днем: на gismeteo.ru: " + dayGismeteoInfo.getAirTemperature() + ". Пригодилось? Скажи спасибо мне и смотри подробнее тут: " + city.getVkAppUrl();
     }
     
     public static int calculateCounter(List<GismeteoWeatherInfo> gismeteoInfos, List<ForecaWeatherInfo> forecaInfos) {
